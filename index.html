@@ -1,0 +1,1383 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>教學紀錄</title>
+<style>
+  :root {
+    --bg: #f5f0eb;
+    --card: #ffffff;
+    --primary: #3d6b8e;
+    --primary-light: #e8f0f7;
+    --accent: #e07b4f;
+    --accent-light: #fdf0ea;
+    --green: #4a8c6f;
+    --green-light: #e8f5ef;
+    --text: #2a2a2a;
+    --text-soft: #666;
+    --border: #e0d8d0;
+    --radius: 14px;
+    --shadow: 0 2px 16px rgba(0,0,0,0.08);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: -apple-system, 'PingFang TC', 'Heiti TC', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    padding: 16px;
+  }
+
+  header {
+    text-align: center;
+    padding: 20px 0 24px;
+  }
+  header h1 {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--primary);
+    letter-spacing: 2px;
+  }
+  header p {
+    font-size: 13px;
+    color: var(--text-soft);
+    margin-top: 4px;
+  }
+
+  .card {
+    background: var(--card);
+    border-radius: var(--radius);
+    padding: 20px;
+    margin-bottom: 14px;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--border);
+  }
+
+  .section-label {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    color: var(--text-soft);
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+
+  .field {
+    margin-bottom: 16px;
+  }
+  .field:last-child { margin-bottom: 0; }
+
+  label {
+    display: block;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-soft);
+    margin-bottom: 6px;
+  }
+
+  input[type="text"], input[type="number"], select, textarea {
+    width: 100%;
+    padding: 12px 14px;
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    font-size: 16px;
+    font-family: inherit;
+    background: #fafaf8;
+    color: var(--text);
+    appearance: none;
+    -webkit-appearance: none;
+    transition: border-color 0.2s;
+  }
+  input:focus, select:focus, textarea:focus {
+    outline: none;
+    border-color: var(--primary);
+    background: white;
+  }
+
+  .btn-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .btn-option {
+    flex: 1;
+    min-width: 80px;
+    padding: 10px 8px;
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    background: #fafaf8;
+    font-size: 14px;
+    font-family: inherit;
+    color: var(--text);
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.15s;
+    font-weight: 500;
+  }
+  .btn-option.selected {
+    background: var(--primary);
+    border-color: var(--primary);
+    color: white;
+    font-weight: 600;
+  }
+  .btn-option.selected-accent {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: white;
+    font-weight: 600;
+  }
+  .btn-option.selected-green {
+    background: var(--green);
+    border-color: var(--green);
+    color: white;
+    font-weight: 600;
+  }
+
+  .fraction-input {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .fraction-input input {
+    flex: 1;
+    text-align: center;
+  }
+  .fraction-slash {
+    font-size: 20px;
+    color: var(--text-soft);
+    font-weight: 300;
+  }
+
+  .subject-block {
+    background: var(--primary-light);
+    border-radius: 12px;
+    padding: 16px;
+    margin-top: 4px;
+  }
+  .subject-block.math {
+    background: var(--accent-light);
+  }
+
+  .exercise-item {
+    background: white;
+    border-radius: 10px;
+    padding: 14px;
+    margin-bottom: 10px;
+    border: 1px solid var(--border);
+  }
+  .exercise-item:last-child { margin-bottom: 0; }
+  .exercise-title {
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 10px;
+    color: var(--text);
+  }
+
+  .math-item {
+    background: white;
+    border-radius: 10px;
+    padding: 14px;
+    margin-bottom: 10px;
+    border: 1px solid var(--border);
+  }
+  .math-item-title {
+    font-size: 13px;
+    color: var(--text-soft);
+    margin-bottom: 8px;
+    font-weight: 500;
+  }
+  .proficiency-group {
+    display: flex;
+    gap: 6px;
+  }
+  .proficiency-group .btn-option {
+    min-width: 0;
+    padding: 8px 4px;
+    font-size: 13px;
+  }
+
+  .checkbox-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .checkbox-row:last-child { border-bottom: none; }
+  .checkbox-row input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+    border-radius: 6px;
+    accent-color: var(--primary);
+    cursor: pointer;
+    flex-shrink: 0;
+  }
+  .checkbox-row label {
+    margin: 0;
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--text);
+    cursor: pointer;
+  }
+
+  .submit-btn {
+    width: 100%;
+    padding: 16px;
+    background: var(--primary);
+    color: white;
+    border: none;
+    border-radius: var(--radius);
+    font-size: 17px;
+    font-weight: 700;
+    font-family: inherit;
+    letter-spacing: 1px;
+    cursor: pointer;
+    margin-top: 8px;
+    transition: background 0.2s, transform 0.1s;
+  }
+  .submit-btn:active { transform: scale(0.98); }
+  .submit-btn:disabled { background: #aaa; }
+
+  .toast {
+    position: fixed;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%) translateY(100px);
+    background: var(--green);
+    color: white;
+    padding: 14px 28px;
+    border-radius: 100px;
+    font-size: 15px;
+    font-weight: 600;
+    transition: transform 0.3s ease;
+    z-index: 999;
+    white-space: nowrap;
+  }
+  .toast.show { transform: translateX(-50%) translateY(0); }
+  .toast.error { background: #c0392b; }
+
+  .hidden { display: none !important; }
+
+  select option { font-size: 16px; }
+
+  .divider {
+    height: 1px;
+    background: var(--border);
+    margin: 16px 0;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>📚 教學紀錄</h1>
+  <p>巡迴輔導記錄系統</p>
+</header>
+
+<!-- 頁面切換 -->
+<div style="display:flex;gap:8px;margin-bottom:16px;">
+  <button class="btn-option selected" id="tab-record" onclick="switchTab('record')" style="flex:1;padding:12px;font-size:15px;font-weight:700;">✏️ 記錄</button>
+  <button class="btn-option" id="tab-query" onclick="switchTab('query')" style="flex:1;padding:12px;font-size:15px;font-weight:700;">🔍 查詢</button>
+</div>
+
+<!-- 記錄頁面 -->
+<div id="page-record">
+
+<!-- 基本資訊 -->
+<div class="card">
+  <div class="section-label">基本資訊</div>
+
+  <div class="field">
+    <label>週次</label>
+    <input type="text" id="weekNum" placeholder="例：第10週" />
+  </div>
+
+  <div class="field">
+    <label>日期</label>
+    <input type="text" id="dateField" readonly />
+  </div>
+
+  <div class="field">
+    <label>學校</label>
+    <div class="btn-group" id="schoolGroup">
+      <button class="btn-option" onclick="selectSchool('SL')">SL</button>
+      <button class="btn-option" onclick="selectSchool('SDA')">SDA</button>
+    </div>
+  </div>
+
+  <div class="field hidden" id="studentField">
+    <label>學生</label>
+    <select id="studentSelect" onchange="onStudentChange()">
+      <option value="">請選擇學生</option>
+    </select>
+  </div>
+
+  <div class="field hidden" id="gradeDisplay">
+    <label>年級</label>
+    <input type="text" id="gradeText" readonly />
+  </div>
+</div>
+
+<!-- 科目 -->
+<div class="card hidden" id="subjectCard">
+  <div class="section-label">科目</div>
+  <div class="btn-group">
+    <button class="btn-option" onclick="selectSubject('國語')">📖 國語</button>
+    <button class="btn-option" onclick="selectSubject('數學')">🔢 數學</button>
+  </div>
+</div>
+
+<!-- 國語內容 -->
+<div class="card hidden" id="chineseCard">
+  <div class="section-label">國語內容</div>
+  <div class="subject-block">
+
+    <div class="field">
+      <label>課次</label>
+      <select id="lessonSelect">
+        <option value="">請選擇課次</option>
+      </select>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- 練習項目 -->
+    <div id="exerciseItems">
+      <!-- 生字書寫 -->
+      <div class="exercise-item" id="ex-writing">
+        <div class="checkbox-row">
+          <input type="checkbox" id="chk-writing" onchange="toggleExercise('writing')">
+          <label for="chk-writing">生字書寫</label>
+        </div>
+        <div id="detail-writing" class="hidden" style="padding-top:10px">
+          <div class="fraction-input">
+            <input type="number" id="writing-correct" placeholder="答對" min="0">
+            <span class="fraction-slash">/</span>
+            <input type="number" id="writing-total" placeholder="總題" min="0">
+          </div>
+        </div>
+      </div>
+
+      <!-- 語詞解釋 -->
+      <div class="exercise-item" id="ex-vocab">
+        <div class="checkbox-row">
+          <input type="checkbox" id="chk-vocab" onchange="toggleExercise('vocab')">
+          <label for="chk-vocab">語詞解釋</label>
+        </div>
+        <div id="detail-vocab" class="hidden" style="padding-top:10px">
+          <div class="fraction-input">
+            <input type="number" id="vocab-correct" placeholder="答對" min="0">
+            <span class="fraction-slash">/</span>
+            <input type="number" id="vocab-total" placeholder="總題" min="0">
+          </div>
+        </div>
+      </div>
+
+      <!-- 語詞配對 -->
+      <div class="exercise-item" id="ex-match">
+        <div class="checkbox-row">
+          <input type="checkbox" id="chk-match" onchange="toggleExercise('match')">
+          <label for="chk-match">語詞配對</label>
+        </div>
+        <div id="detail-match" class="hidden" style="padding-top:10px">
+          <div class="fraction-input">
+            <input type="number" id="match-correct" placeholder="答對" min="0">
+            <span class="fraction-slash">/</span>
+            <input type="number" id="match-total" placeholder="總題" min="0">
+          </div>
+        </div>
+      </div>
+
+      <!-- 造句 -->
+      <div class="exercise-item" id="ex-sentence">
+        <div class="checkbox-row">
+          <input type="checkbox" id="chk-sentence" onchange="toggleExercise('sentence')">
+          <label for="chk-sentence">造句</label>
+        </div>
+        <div id="detail-sentence" class="hidden" style="padding-top:10px">
+          <div class="btn-group" id="sentenceGroup">
+            <button class="btn-option" onclick="selectSentence('獨力完成', this)">獨力完成</button>
+            <button class="btn-option" onclick="selectSentence('引導完成', this)">引導完成</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- 課文理解測驗 -->
+      <div class="exercise-item" id="ex-reading">
+        <div class="checkbox-row">
+          <input type="checkbox" id="chk-reading" onchange="toggleExercise('reading')">
+          <label for="chk-reading">課文理解測驗</label>
+        </div>
+        <div id="detail-reading" class="hidden" style="padding-top:10px">
+          <div class="fraction-input">
+            <input type="number" id="reading-correct" placeholder="答對" min="0">
+            <span class="fraction-slash">/</span>
+            <input type="number" id="reading-total" placeholder="總題" min="0">
+          </div>
+        </div>
+      </div>
+
+      <!-- 常用字認字（鄭生專屬） -->
+      <div class="exercise-item hidden" id="ex-charPractice">
+        <div class="checkbox-row">
+          <input type="checkbox" id="chk-charPractice" onchange="toggleExercise('charPractice')">
+          <label for="chk-charPractice">常用字認字</label>
+        </div>
+        <div id="detail-charPractice" class="hidden" style="padding-top:10px">
+          <input type="text" id="charPractice-unit" placeholder="單元名稱（如：第1單元）" style="margin-bottom:8px">
+          <div class="fraction-input">
+            <input type="number" id="charPractice-correct" placeholder="答對" min="0">
+            <span class="fraction-slash">/</span>
+            <input type="number" id="charPractice-total" placeholder="總題" min="0">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 一年級國語區塊（林生、溫生） -->
+    <div id="grade1-chinese-block" class="hidden">
+      <div class="divider"></div>
+
+      <div class="field">
+        <label>課次</label>
+        <select id="grade1LessonSelect">
+          <option value="">請選擇課次</option>
+          <option>L1</option><option>L2</option><option>L3</option>
+          <option>L4</option><option>L5</option><option>L6</option>
+          <option>L7</option><option>L8</option><option>L9</option>
+          <option>L10</option><option>L11</option><option>L12</option>
+          <option>其他</option><option>完成</option>
+        </select>
+      </div>
+
+      <!-- 注音符號（可複選多項） -->
+      <div class="exercise-item">
+        <div class="section-label" style="margin-bottom:8px">注音符號</div>
+        <div id="zhuyin-items">
+          <div class="math-item" id="zhuyin-37">
+            <div class="math-item-title">37個符號</div>
+            <div class="proficiency-group">
+              <button class="btn-option" onclick="setGrade1Rating('zhuyin37','良好',this)">良好</button>
+              <button class="btn-option" onclick="setGrade1Rating('zhuyin37','尚可',this)">尚可</button>
+              <button class="btn-option" onclick="setGrade1Rating('zhuyin37','加油',this)">加油</button>
+            </div>
+          </div>
+          <div class="math-item" id="zhuyin-double">
+            <div class="math-item-title">結合韻雙拼</div>
+            <div class="proficiency-group">
+              <button class="btn-option" onclick="setGrade1Rating('zhuyinDouble','良好',this)">良好</button>
+              <button class="btn-option" onclick="setGrade1Rating('zhuyinDouble','尚可',this)">尚可</button>
+              <button class="btn-option" onclick="setGrade1Rating('zhuyinDouble','加油',this)">加油</button>
+            </div>
+          </div>
+          <div class="math-item" id="zhuyin-triple">
+            <div class="math-item-title">結合韻三拼</div>
+            <div class="proficiency-group">
+              <button class="btn-option" onclick="setGrade1Rating('zhuyinTriple','良好',this)">良好</button>
+              <button class="btn-option" onclick="setGrade1Rating('zhuyinTriple','尚可',this)">尚可</button>
+              <button class="btn-option" onclick="setGrade1Rating('zhuyinTriple','加油',this)">加油</button>
+            </div>
+          </div>
+          <div class="math-item" id="zhuyin-tone">
+            <div class="math-item-title">聲調</div>
+            <div class="proficiency-group">
+              <button class="btn-option" onclick="setGrade1Rating('zhuyinTone','良好',this)">良好</button>
+              <button class="btn-option" onclick="setGrade1Rating('zhuyinTone','尚可',this)">尚可</button>
+              <button class="btn-option" onclick="setGrade1Rating('zhuyinTone','加油',this)">加油</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 語詞讀 -->
+      <div class="math-item">
+        <div class="math-item-title">語詞 讀</div>
+        <div class="proficiency-group">
+          <button class="btn-option" onclick="setGrade1Rating('vocabRead','良好',this)">良好</button>
+          <button class="btn-option" onclick="setGrade1Rating('vocabRead','尚可',this)">尚可</button>
+          <button class="btn-option" onclick="setGrade1Rating('vocabRead','加油',this)">加油</button>
+        </div>
+      </div>
+
+      <!-- 生字讀 -->
+      <div class="math-item">
+        <div class="math-item-title">生字 讀</div>
+        <div class="proficiency-group">
+          <button class="btn-option" onclick="setGrade1Rating('charRead','良好',this)">良好</button>
+          <button class="btn-option" onclick="setGrade1Rating('charRead','尚可',this)">尚可</button>
+          <button class="btn-option" onclick="setGrade1Rating('charRead','加油',this)">加油</button>
+        </div>
+      </div>
+
+      <!-- 生字寫 -->
+      <div class="math-item">
+        <div class="math-item-title">生字 寫</div>
+        <div class="proficiency-group">
+          <button class="btn-option" onclick="setGrade1Rating('charWrite','良好',this)">良好</button>
+          <button class="btn-option" onclick="setGrade1Rating('charWrite','尚可',this)">尚可</button>
+          <button class="btn-option" onclick="setGrade1Rating('charWrite','加油',this)">加油</button>
+        </div>
+      </div>
+
+      <!-- 課文跟讀 -->
+      <div class="math-item">
+        <div class="math-item-title">課文跟讀</div>
+        <div class="proficiency-group">
+          <button class="btn-option" onclick="setGrade1Rating('textFollow','良好',this)">良好</button>
+          <button class="btn-option" onclick="setGrade1Rating('textFollow','尚可',this)">尚可</button>
+          <button class="btn-option" onclick="setGrade1Rating('textFollow','加油',this)">加油</button>
+        </div>
+      </div>
+
+      <!-- 課文理解 -->
+      <div class="math-item">
+        <div class="math-item-title">課文理解</div>
+        <div class="proficiency-group">
+          <button class="btn-option" onclick="setGrade1Rating('textComp','良好',this)">良好</button>
+          <button class="btn-option" onclick="setGrade1Rating('textComp','尚可',this)">尚可</button>
+          <button class="btn-option" onclick="setGrade1Rating('textComp','加油',this)">加油</button>
+        </div>
+      </div>
+
+      <!-- 句型練習 -->
+      <div class="math-item">
+        <div class="math-item-title">句型練習</div>
+        <div class="proficiency-group">
+          <button class="btn-option" onclick="setGrade1Rating('sentence','良好',this)">良好</button>
+          <button class="btn-option" onclick="setGrade1Rating('sentence','尚可',this)">尚可</button>
+          <button class="btn-option" onclick="setGrade1Rating('sentence','加油',this)">加油</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- 數學內容 -->
+<div class="card hidden" id="mathCard">
+  <div class="section-label">數學內容</div>
+  <div class="subject-block math">
+
+    <div class="field">
+      <label>單元</label>
+      <select id="mathUnitSelect" onchange="onMathUnitChange()">
+        <option value="">請選擇單元</option>
+      </select>
+    </div>
+
+    <div id="mathUnitField">
+    <div id="mathSubItems" class="hidden">
+      <div class="divider"></div>
+      <label style="font-size:13px;font-weight:600;color:var(--text-soft);margin-bottom:10px;display:block">各細項熟練度</label>
+      <div id="mathSubItemsList"></div>
+    </div>
+    </div>
+
+    <!-- 一年級數學（林生、溫生） -->
+    <div id="grade1-math-block" class="hidden">
+      <div class="divider"></div>
+
+      <!-- 單元選單 -->
+      <div class="field">
+        <label>單元</label>
+        <select id="grade1MathUnitSelect">
+          <option value="">請選擇單元</option>
+          <option>第1單元 20以內的加法</option>
+          <option>第2單元 長度</option>
+          <option>第3單元 20以內的減法</option>
+          <option>第4單元 100以內的數</option>
+          <option>第5單元 形狀與形體</option>
+          <option>第6單元 數數看有多少元</option>
+          <option>第7單元 幾月幾日星期幾</option>
+          <option>第8單元 兩位數的加減法</option>
+          <option>第9單元 分類整理</option>
+          <option>其他</option>
+          <option>完成</option>
+        </select>
+      </div>
+
+      <!-- 基本四則運算 -->
+      <div class="math-item">
+        <div class="math-item-title">基本四則運算</div>
+        <div style="margin-bottom:10px">
+          <label style="font-size:12px;color:var(--text-soft);margin-bottom:6px;display:block">練習項目（可複選）</label>
+          <div class="btn-group" style="flex-wrap:wrap" id="basicMathGroup">
+            <button class="btn-option" onclick="toggleBasicMath('數數',this)" style="min-width:60px;flex:none;font-size:13px">數數</button>
+            <button class="btn-option" onclick="toggleBasicMath('比較',this)" style="min-width:60px;flex:none;font-size:13px">比較</button>
+            <button class="btn-option" onclick="toggleBasicMath('數序',this)" style="min-width:60px;flex:none;font-size:13px">數序</button>
+            <button class="btn-option" onclick="toggleBasicMath('分與合',this)" style="min-width:60px;flex:none;font-size:13px">分與合</button>
+            <button class="btn-option" onclick="toggleBasicMath('形狀',this)" style="min-width:60px;flex:none;font-size:13px">形狀</button>
+            <button class="btn-option" onclick="toggleBasicMath('時間',this)" style="min-width:60px;flex:none;font-size:13px">時間</button>
+            <button class="btn-option" onclick="toggleBasicMath('加法',this)" style="min-width:60px;flex:none;font-size:13px">加法</button>
+            <button class="btn-option" onclick="toggleBasicMath('減法',this)" style="min-width:60px;flex:none;font-size:13px">減法</button>
+          </div>
+        </div>
+        <div>
+          <label style="font-size:12px;color:var(--text-soft);margin-bottom:6px;display:block">整體表現</label>
+          <div style="display:flex;flex-wrap:wrap;gap:6px" id="basicMathRatingGroup">
+            <button class="btn-option" onclick="setGrade1MathRating('mathBasic','良好',this)" style="min-width:0;flex:1;font-size:13px;padding:8px 4px">良好</button>
+            <button class="btn-option" onclick="setGrade1MathRating('mathBasic','尚可',this)" style="min-width:0;flex:1;font-size:13px;padding:8px 4px">尚可</button>
+            <button class="btn-option" onclick="setGrade1MathRating('mathBasic','持續練習',this)" style="min-width:0;flex:1;font-size:13px;padding:8px 4px">持續練習</button>
+            <button class="btn-option" onclick="setGrade1MathRating('mathBasic','容易計算錯誤',this)" style="min-width:0;flex:1;font-size:13px;padding:8px 4px">計算錯誤</button>
+            <button class="btn-option" onclick="setGrade1MathRating('mathBasic','對位問題',this)" style="min-width:0;flex:1;font-size:13px;padding:8px 4px">對位問題</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- 單元內容 -->
+      <div class="math-item">
+        <div class="math-item-title">單元內容</div>
+        <div class="proficiency-group" id="unitContentGroup">
+          <button class="btn-option" onclick="setGrade1MathRating('unitContent','良好',this)">良好</button>
+          <button class="btn-option" onclick="setGrade1MathRating('unitContent','尚可',this)">尚可</button>
+          <button class="btn-option" onclick="setGrade1MathRating('unitContent','加油',this)">加油</button>
+        </div>
+      </div>
+
+      <!-- 題意理解 -->
+      <div class="math-item">
+        <div class="math-item-title">題意理解</div>
+        <div style="display:flex;flex-wrap:wrap;gap:6px" id="problemCompGroup">
+          <button class="btn-option" onclick="setGrade1MathRating('problemComp','能獨立解題',this)" style="min-width:0;flex:1;font-size:13px;padding:8px 4px">能獨立解題</button>
+          <button class="btn-option" onclick="setGrade1MathRating('problemComp','能引導解題',this)" style="min-width:0;flex:1;font-size:13px;padding:8px 4px">能引導解題</button>
+          <button class="btn-option" onclick="setGrade1MathRating('problemComp','還要多練習',this)" style="min-width:0;flex:1;font-size:13px;padding:8px 4px">還要多練習</button>
+        </div>
+      </div>
+
+      <!-- 單元測驗 -->
+      <div class="math-item">
+        <div class="math-item-title">單元測驗</div>
+        <div style="display:flex;flex-wrap:wrap;gap:6px" id="unitTestGroup">
+          <button class="btn-option" onclick="setGrade1MathRating('unitTest','通過',this)" style="min-width:0;flex:1;font-size:13px;padding:8px 4px">通過</button>
+          <button class="btn-option" onclick="setGrade1MathRating('unitTest','尚可',this)" style="min-width:0;flex:1;font-size:13px;padding:8px 4px">尚可</button>
+          <button class="btn-option" onclick="setGrade1MathRating('unitTest','加油',this)" style="min-width:0;flex:1;font-size:13px;padding:8px 4px">加油</button>
+          <button class="btn-option" onclick="setGrade1MathRating('unitTest','多練習',this)" style="min-width:0;flex:1;font-size:13px;padding:8px 4px">多練習</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- 送出 -->
+<button class="submit-btn hidden" id="submitBtn" onclick="askNote()">✓ 送出紀錄</button>
+
+<!-- 備註 Modal -->
+<div id="noteModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:100;align-items:flex-end;justify-content:center;">
+  <div style="background:white;width:100%;max-width:480px;border-radius:20px 20px 0 0;padding:24px 20px 36px;">
+    <div style="font-size:16px;font-weight:700;margin-bottom:16px;color:var(--text)">有備註要記錄嗎？</div>
+    <div style="display:flex;gap:10px;margin-bottom:16px;">
+      <button class="btn-option" id="noteYesBtn" onclick="showNoteInput()" style="flex:1;padding:14px;font-size:15px;">有，我要記錄</button>
+      <button class="btn-option" id="noteNoBtn" onclick="submitRecord()" style="flex:1;padding:14px;font-size:15px;">沒有，直接送出</button>
+    </div>
+    <div id="noteInputArea" style="display:none;">
+      <textarea id="noteText" rows="4" placeholder="補充說明..." style="width:100%;padding:12px 14px;border:1.5px solid var(--border);border-radius:10px;font-size:16px;font-family:inherit;background:#fafaf8;resize:none;"></textarea>
+      <button class="submit-btn" onclick="submitRecord()" style="margin-top:12px;">✓ 確認送出</button>
+    </div>
+  </div>
+</div>
+
+</div><!-- end page-record -->
+
+<!-- 查詢頁面 -->
+<div id="page-query" style="display:none;">
+  <div class="card">
+    <div class="section-label">查詢條件</div>
+    <div class="field">
+      <label>學生</label>
+      <select id="queryStudent">
+        <option value="">請選擇學生</option>
+        <option>柏生</option>
+        <option>騏生</option>
+        <option>大許</option>
+        <option>陳生</option>
+        <option>鄭生</option>
+        <option>小許</option>
+        <option>柯生</option>
+        <option>伍生</option>
+        <option>林生</option>
+        <option>溫生</option>
+      </select>
+    </div>
+    <div style="display:flex;gap:10px;">
+      <div class="field" style="flex:1">
+        <label>從第幾週</label>
+        <input type="number" id="weekFrom" placeholder="例：10" min="1" max="30">
+      </div>
+      <div class="field" style="flex:1">
+        <label>到第幾週</label>
+        <input type="number" id="weekTo" placeholder="例：11" min="1" max="30">
+      </div>
+    </div>
+    <button class="submit-btn" onclick="queryRecords()" id="queryBtn">🔍 查詢</button>
+  </div>
+
+  <!-- 查詢結果 -->
+  <div id="queryResult" style="display:none;">
+    <div class="card">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+        <div class="section-label" style="margin:0" id="queryResultTitle"></div>
+        <button onclick="copyResult()" style="background:var(--green);color:white;border:none;border-radius:8px;padding:8px 14px;font-size:13px;font-weight:600;font-family:inherit;cursor:pointer;">複製全部</button>
+      </div>
+      <div id="queryResultContent" style="font-size:14px;line-height:2;white-space:pre-wrap;color:var(--text);"></div>
+    </div>
+  </div>
+
+  <div id="queryEmpty" style="display:none;" class="card">
+    <p style="text-align:center;color:var(--text-soft);padding:20px 0;">查無資料</p>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwTR29QBJSNnBvzXUsPA9S3w3ydppRIlBYedL6jyGr8HDwm3DyuN9UtdXGnNR5Lo_Dg/exec";
+
+// ===== 學生資料 =====
+const STUDENTS = {
+  SL: [
+    { name: "柏生", grade: "五年級", chVer: "南一", mathVer: "南一" },
+    { name: "騏生", grade: "四年級", chVer: "南一", mathVer: "南一" },
+  ],
+  SDA: [
+    { name: "大許", grade: "五年級", chVer: "康軒", mathVer: "南一" },
+    { name: "陳生", grade: "五年級", chVer: "康軒", mathVer: "南一" },
+    { name: "鄭生", grade: "五年級", chVer: "康軒", mathVer: "南一", special: "鄭生" },
+    { name: "小許", grade: "四年級", chVer: "翰林", mathVer: "康軒" },
+    { name: "柯生", grade: "四年級", chVer: "翰林", mathVer: "康軒" },
+    { name: "伍生", grade: "四年級", chVer: "翰林", mathVer: "康軒" },
+    { name: "林生", grade: "一年級", chVer: "翰林", mathVer: "翰林", special: "一年級" },
+    { name: "溫生", grade: "一年級", chVer: "翰林", mathVer: "翰林", special: "一年級" },
+  ]
+};
+
+// ===== 國語課次 =====
+const CH_LESSONS = {
+  "南一五": [
+    "L1 穿越時空的味道", "L2 在黑暗中乘著音樂飛翔", "L3 色香味的陽光",
+    "L4 縣官審石頭", "L5 高明說話術", "L6 讀書報告——佐賀的超級阿嬤",
+    "L7 魔術師爸爸", "L8 八歲，一個人去旅行", "L9 紅鼻子醫生",
+    "L10 沉默的動物園", "L11 地下護衛軍", "L12 金字塔之謎",
+    "其他", "完成"
+  ],
+  "南一四": [
+    "L1 烤龍慶元宵", "L2 看戲，何元亨", "L3 舞吧！小飛魚",
+    "L4 蝶之生，山鷹", "L5 活出生命奇蹟", "L6 走過就知道",
+    "L7 不一樣的母親花", "L8 屋頂上的小貓，子魚", "L9 用一公斤愛嘉明湖",
+    "L10 想像與發明", "L11 小事物，大驚奇", "L12 九蛙傳奇",
+    "其他", "完成"
+  ],
+  "康軒": [
+    "L1 你會怎麼回答？", "L2 智救養馬人", "L3 真正的「聰明」",
+    "L4 小記者，出動！", "L5 奇幻光芒的祕密", "L6 人「聲」就是戲",
+    "L7 題西林壁", "L8 海洋的林殺手", "L9 你想做人魚嗎？",
+    "L10 玉米人的奇蹟", "L11 幸福的火苗", "L12 神農嘗百草",
+    "其他", "完成"
+  ],
+  "翰林一": [
+    "L1 春天來了", "L2 小雨", "L3 美好的一天",
+    "L4 送什麼呢", "L5 窗外的小麻雀", "L6 毛毛蟲過河",
+    "L7 借筆", "L8 兩張卡片", "L9 友情的拐杖",
+    "L10 一棵小樹", "L11 鉛筆盒橡皮擦", "L12 上臺說故事",
+    "其他", "完成"
+  ],
+  "翰林四": [
+    "L1 稻間鴨", "L2 綠色魔法學校", "L3 石虎兄妹",
+    "L4 阿里棒棒", "L5 快樂兒童日", "L6 阿公的祕密",
+    "L7 棒球英雄夢", "L8 夢幻全壘打", "L9 單車遊日月潭",
+    "L10 孫悟空三借芭蕉扇", "L11 最後一片葉子", "L12 閱讀課",
+    "其他", "完成"
+  ],
+};
+
+// ===== 數學單元 =====
+const MATH_UNITS = {
+  "南一五": [
+    { unit: "第1單元 分數的計算", items: ["1-1 用分數表示整數相除的結果","1-2 整數的分數倍","1-3 分數的分數倍","1-4 被乘數、乘數和積的關係","1-5 分數除以整數"] },
+    { unit: "第2單元 數的十進位結構", items: ["2-1 一億以上的數","2-2 認識多位小數","2-3 數的十進位結構"] },
+    { unit: "第3單元 小數的乘法", items: ["3-1 多位小數乘以整數","3-2 整數的小數倍","3-3 小數的小數倍","3-4 被乘數、乘數和積的關係"] },
+    { unit: "第4單元 扇形", items: ["4-1 認識扇形","4-2 認識圓心角","4-3 認識½圓、⅓圓、¼圓的扇形","4-4 繪製扇形"] },
+    { unit: "第5單元 體積", items: ["5-1 體積的公式","5-2 認識立方公尺和換算","5-3 複合形體的體積"] },
+    { unit: "第6單元 整數、小數除以整數", items: ["6-1 整數除以整數","6-2 小數除以整數","6-3 小數的概數和應用","6-4 分數和小數的互換"] },
+    { unit: "第7單元 生活中的大單位", items: ["7-1 認識公頃","7-2 公頃和公斤的換算及應用","7-3 認識公畝和公頃","7-4 平方公尺、公畝和公頃的換算及應用","7-5 認識平方公里","7-6 平方公尺、公畝、公頃和平方公里的換算及應用"] },
+    { unit: "第8單元 比率和百分率", items: ["8-1 認識比率","8-2 認識百分率","8-3 百分率的應用"] },
+    { unit: "第9單元 容積和容量", items: ["9-1 認識容積","9-2 容積和容量的關係","9-3 不規則物體的體積","9-4 容量和容積的計算及應用"] },
+    { unit: "第10單元 柱體、錐體和球體", items: ["10-1 柱體和錐體的分類與命名","10-2 柱體的構成要素","10-3 錐體的構成要素","10-4 柱體及錐體面和面的關係","10-5 認識球體"] },
+    { unit: "其他", items: [] },
+    { unit: "完成", items: [] },
+  ],
+  "南一四": [
+    { unit: "第1單元 多位數的乘與除", items: ["1-1 多位數的乘法","1-2 末位是0的乘法","1-3 多位數的除法","1-4 末位是0的除法"] },
+    { unit: "第2單元 四邊形", items: ["2-1 垂直和平行","2-2 認識四邊形","2-3 認識對角線","2-4 繪製四邊形"] },
+    { unit: "第3單元 分數的加減和整數倍", items: ["3-1 同分母分數的大小比較","3-2 同分母分數的加法","3-3 同分母分數的減法","3-4 分數的整數倍","3-5 分數的應用"] },
+    { unit: "第4單元 概數", items: ["4-1 生活中的概數","4-2 無條件進入法","4-3 無條件捨去法","4-4 四捨五入法","4-5 概數的應用"] },
+    { unit: "第5單元 統計圖表", items: ["5-1 認識長條圖","5-2 認識折線圖","5-3 認識複雜長條圖","5-4 繪製長條圖"] },
+    { unit: "第6單元 小數乘以整數", items: ["6-1 一位小數乘以一位整數","6-2 二位小數乘以一位整數","6-3 一、二位小數乘以二位整數","6-4 小數乘法的應用"] },
+    { unit: "第7單元 周長和面積", items: ["7-1 周長公式","7-2 面積公式","7-3 周長和面積的關係","7-4 認識平方公尺和換算","7-5 複合圖形的面積"] },
+    { unit: "第8單元 等值分數", items: ["8-1 認識等值分數","8-2 找出等值分數","8-3 簡單異分母分數的比較","8-4 分數和小數的互換"] },
+    { unit: "第9單元 時間的加減", items: ["9-1 時間的換算","9-2 時間量的加減計算","9-3 兩時刻間的時間量","9-4 一段時間之前或之後的時刻"] },
+    { unit: "第10單元 立方公分", items: ["10-1 認識體積","10-2 認識立方公分","10-3 複合形體的體積"] },
+    { unit: "其他", items: [] },
+    { unit: "完成", items: [] },
+  ],
+  "翰林一": [
+    { unit: "第1單元 20以內的加法", items: ["1-1 基本加法","1-2 5+6和6+5","1-3 加法算式的規律"] },
+    { unit: "第2單元 長度", items: ["2-1 比一比","2-2 量長度","2-3 長度的加減"] },
+    { unit: "第3單元 20以內的減法", items: ["3-1 基本減法","3-2 比比看","3-3 減法算式的規律"] },
+    { unit: "第4單元 100以內的數", items: ["4-1 數到100","4-2 認識十位和個位","4-3 數的大小比較","4-4 百數表"] },
+    { unit: "第5單元 形狀與形體", items: ["5-1 做圖形","5-2 拼圖形","5-3 堆形體"] },
+    { unit: "第6單元 數數看有多少元", items: ["6-1 1、5、10元","6-2 50、100元","6-3 怎麼付錢"] },
+    { unit: "第7單元 幾月幾日星期幾", items: ["7-1 認識日曆","7-2 認識月曆","7-3 月曆的應用"] },
+    { unit: "第8單元 兩位數的加減法", items: ["8-1 兩位數的加法","8-2 兩位數的減法","8-3 加一加、減一減"] },
+    { unit: "第9單元 分類整理", items: ["9-1 分類","9-2 記錄","9-3 說讀"] },
+    { unit: "其他", items: [] },
+    { unit: "完成", items: [] },
+  ],
+  "康軒四": [
+    { unit: "第1單元 多位數的乘與除", items: ["1-1 三、四位數×三位數","1-2 末幾位為0的乘法","1-3 三、四位數÷三位數","1-4 末幾位為0的除法"] },
+    { unit: "第2單元 四邊形", items: ["2-1 垂直和平行","2-2 認識各類四邊形","2-3 分割四邊形及畫四邊形"] },
+    { unit: "第3單元 概數", items: ["3-1 生活中的概數","3-2 無條件進入法","3-3 無條件捨去法","3-4 四捨五入法","3-5 應用概數做估算"] },
+    { unit: "第4單元 數量規律", items: ["4-1 圖形的規律","4-2 數字的規律","4-3 奇偶數的規律"] },
+    { unit: "第5單元 小數乘法", items: ["5-1 一位小數×整數","5-2 二位小數×整數","5-3 小數計算的應用","5-4 小數數線"] },
+    { unit: "第6單元 周長與面積", items: ["6-1 長形、正方形的周長","6-2 長形、正方形的面積","6-3 周長和面積的關係","6-4 認識平方公尺","6-5 複合圖形的面積"] },
+    { unit: "第7單元 等值分數", items: ["7-1 等值分數","7-2 簡單異分母分數的比較與加減","7-3 分數和小數的互換","7-4 分數數線"] },
+    { unit: "第8單元 簡化計算", items: ["8-1 加與減的簡化計算","8-2 乘與除的簡化計算"] },
+    { unit: "第9單元 時間的計算", items: ["9-1 時間單位的換算","9-2 時間量的加減","9-3 兩時刻間的時間量","9-4 時刻與時間量的計算","9-5 跨日的時間計算"] },
+    { unit: "第10單元 立方公分", items: ["10-1 認識體積","10-2 立體堆疊","10-3 認識立方公分"] },
+    { unit: "其他", items: [] },
+    { unit: "完成", items: [] },
+  ],
+};
+
+// ===== 狀態 =====
+let state = {
+  school: "", student: null, grade: "", subject: "",
+  lessonKey: "", mathUnit: "", mathSubRatings: {}, sentenceResult: "",
+};
+
+// ===== 初始化日期 =====
+function initDate() {
+  const now = new Date();
+  const y = now.getFullYear();
+  const m = String(now.getMonth()+1).padStart(2,'0');
+  const d = String(now.getDate()).padStart(2,'0');
+  document.getElementById('dateField').value = `${y}/${m}/${d}`;
+}
+initDate();
+
+// ===== 選學校 =====
+function selectSchool(school) {
+  state.school = school;
+  state.student = null;
+  state.subject = "";
+  document.querySelectorAll('#schoolGroup .btn-option').forEach(b => b.classList.remove('selected'));
+  event.target.classList.add('selected');
+
+  const sel = document.getElementById('studentSelect');
+  sel.innerHTML = '<option value="">請選擇學生</option>';
+  STUDENTS[school].forEach(s => {
+    const opt = document.createElement('option');
+    opt.value = s.name;
+    opt.textContent = s.name + "　" + s.grade;
+    sel.appendChild(opt);
+  });
+
+  show('studentField');
+  hide('gradeDisplay');
+  hide('subjectCard');
+  hide('chineseCard');
+  hide('mathCard');
+  hide('noteCard');
+  hide('submitBtn');
+}
+
+// ===== 選學生 =====
+function onStudentChange() {
+  const name = document.getElementById('studentSelect').value;
+  if (!name) return;
+  const list = STUDENTS[state.school];
+  state.student = list.find(s => s.name === name);
+  state.grade = state.student.grade;
+  document.getElementById('gradeText').value = state.grade;
+  show('gradeDisplay');
+  show('subjectCard');
+  hide('chineseCard');
+  hide('mathCard');
+  hide('noteCard');
+  hide('submitBtn');
+  state.subject = "";
+}
+
+// ===== 選科目 =====
+function selectSubject(subj) {
+  state.subject = subj;
+  document.querySelectorAll('#subjectCard .btn-option').forEach(b => b.classList.remove('selected'));
+  event.target.classList.add('selected');
+
+  if (subj === '國語') {
+    setupChineseCard();
+    show('chineseCard');
+    hide('mathCard');
+  } else {
+    setupMathCard();
+    show('mathCard');
+    hide('chineseCard');
+  }
+  show('noteCard');
+  show('submitBtn');
+}
+
+// ===== 設定國語 =====
+function setupChineseCard() {
+  const s = state.student;
+  let lessonKey = s.chVer;
+  if (s.chVer === '南一') {
+    lessonKey = s.grade === '五年級' ? '南一五' : '南一四';
+  } else if (s.chVer === '翰林') {
+    lessonKey = s.grade === '四年級' ? '翰林四' : '翰林一';
+  }
+  state.lessonKey = lessonKey;
+
+  // 課次
+  const sel = document.getElementById('lessonSelect');
+  sel.innerHTML = '<option value="">請選擇課次</option>';
+  const lessons = CH_LESSONS[lessonKey] || [];
+  lessons.forEach(l => {
+    const opt = document.createElement('option');
+    opt.value = l; opt.textContent = l;
+    sel.appendChild(opt);
+  });
+
+  // 特殊模式判斷
+  const isZheng = s.special === '鄭生';
+  const isGrade1 = s.special === '一年級';
+  const isNormal = !isZheng && !isGrade1;
+
+  setVisible('ex-writing', isNormal);
+  setVisible('ex-vocab', isNormal);
+  setVisible('ex-match', isNormal);
+  setVisible('ex-sentence', isNormal || isZheng);
+  setVisible('ex-reading', isNormal || isZheng);
+  setVisible('ex-charPractice', isZheng);
+  setVisible('grade1-chinese-block', isGrade1);
+
+  // 重設勾選
+  ['writing','vocab','match','reading','charPractice'].forEach(k => {
+    const chk = document.getElementById('chk-'+k);
+    if (chk) { chk.checked = false; hide('detail-'+k); }
+  });
+  const chkS = document.getElementById('chk-sentence');
+  if (chkS) { chkS.checked = false; hide('detail-sentence'); }
+  resetGrade1Chinese();
+}
+
+// ===== 設定數學 =====
+function setupMathCard() {
+  const s = state.student;
+  let mathKey = s.mathVer === '南一' 
+    ? (s.grade === '五年級' ? '南一五' : '南一四')
+    : (s.mathVer === '康軒' ? '康軒四' : null);
+
+  const sel = document.getElementById('mathUnitSelect');
+  sel.innerHTML = '<option value="">請選擇單元</option>';
+
+  // 一年級特殊數學
+  const isGrade1Math = s.special === '一年級';
+  setVisible('grade1-math-block', isGrade1Math);
+  setVisible('mathUnitField', !isGrade1Math);
+
+  if (!isGrade1Math && mathKey && MATH_UNITS[mathKey]) {
+    MATH_UNITS[mathKey].forEach(u => {
+      const opt = document.createElement('option');
+      opt.value = u.unit; opt.textContent = u.unit;
+      sel.appendChild(opt);
+    });
+  }
+  hide('mathSubItems');
+  state.mathUnit = "";
+  state.mathSubRatings = {};
+  if (isGrade1Math) resetGrade1Math();
+}
+
+// ===== 數學單元選擇 =====
+function onMathUnitChange() {
+  const unitName = document.getElementById('mathUnitSelect').value;
+  state.mathUnit = unitName;
+  state.mathSubRatings = {};
+
+  const s = state.student;
+  let mathKey = s.mathVer === '南一'
+    ? (s.grade === '五年級' ? '南一五' : '南一四')
+    : (s.mathVer === '康軒' ? '康軒四' : null);
+
+  if (!mathKey) { hide('mathSubItems'); return; }
+
+  const unitData = MATH_UNITS[mathKey].find(u => u.unit === unitName);
+  if (!unitData || unitData.items.length === 0) { hide('mathSubItems'); return; }
+
+  const list = document.getElementById('mathSubItemsList');
+  list.innerHTML = '';
+  unitData.items.forEach(item => {
+    const div = document.createElement('div');
+    div.className = 'math-item';
+    div.innerHTML = `
+      <div class="math-item-title">${item}</div>
+      <div class="proficiency-group">
+        <button class="btn-option" onclick="setProficiency('${item}', '良好', this)">👍 良好</button>
+        <button class="btn-option" onclick="setProficiency('${item}', '尚可', this)">🤔 尚可</button>
+        <button class="btn-option" onclick="setProficiency('${item}', '加油', this)">💪 加油</button>
+      </div>`;
+    list.appendChild(div);
+  });
+  show('mathSubItems');
+}
+
+function setProficiency(item, level, btn) {
+  state.mathSubRatings[item] = level;
+  const group = btn.closest('.proficiency-group');
+  group.querySelectorAll('.btn-option').forEach(b => {
+    b.classList.remove('selected','selected-green','selected-accent');
+  });
+  if (level === '良好') btn.classList.add('selected-green');
+  else if (level === '尚可') btn.classList.add('selected');
+  else btn.classList.add('selected-accent');
+}
+
+// ===== 切換練習詳情 =====
+function toggleExercise(key) {
+  const chk = document.getElementById('chk-'+key);
+  const detail = document.getElementById('detail-'+key);
+  if (chk.checked) show(detail.id);
+  else hide(detail.id);
+}
+
+// ===== 一年級評分狀態 =====
+let grade1ChRatings = {};
+let grade1MathRatings = {};
+let basicMathItems = [];
+
+function setGrade1Rating(key, val, btn) {
+  const group = btn.closest('.proficiency-group') || btn.closest('div[style*="flex-wrap"]');
+  if (group) group.querySelectorAll('.btn-option').forEach(b => b.classList.remove('selected','selected-green','selected-accent'));
+  btn.classList.add('selected');
+  grade1ChRatings[key] = val;
+}
+
+function setGrade1MathRating(key, val, btn) {
+  const group = btn.closest('.proficiency-group') || btn.closest('div[style*="flex-wrap"]');
+  if (group) group.querySelectorAll('.btn-option').forEach(b => b.classList.remove('selected','selected-green','selected-accent'));
+  btn.classList.add('selected');
+  grade1MathRatings[key] = val;
+}
+
+function toggleBasicMath(item, btn) {
+  const idx = basicMathItems.indexOf(item);
+  if (idx === -1) {
+    basicMathItems.push(item);
+    btn.classList.add('selected');
+  } else {
+    basicMathItems.splice(idx, 1);
+    btn.classList.remove('selected');
+  }
+}
+
+function resetGrade1Chinese() {
+  grade1ChRatings = {};
+  document.querySelectorAll('#grade1-chinese-block .btn-option').forEach(b => b.classList.remove('selected','selected-green','selected-accent'));
+  const ls = document.getElementById('grade1LessonSelect');
+  if (ls) ls.value = '';
+}
+
+function resetGrade1Math() {
+  grade1MathRatings = {};
+  basicMathItems = [];
+  document.querySelectorAll('#grade1-math-block .btn-option').forEach(b => b.classList.remove('selected','selected-green','selected-accent'));
+  const sel = document.getElementById('grade1MathUnitSelect');
+  if (sel) sel.value = '';
+}
+
+// ===== 造句評分 =====
+function selectSentence(val, btn) {
+  state.sentenceResult = val;
+  document.querySelectorAll('#sentenceGroup .btn-option').forEach(b => b.classList.remove('selected'));
+  btn.classList.add('selected');
+}
+
+// ===== 備註 Modal =====
+function askNote() {
+  if (!state.school) { showToast('請選擇學校', true); return; }
+  if (!state.student) { showToast('請選擇學生', true); return; }
+  if (!state.subject) { showToast('請選擇科目', true); return; }
+  document.getElementById('noteText').value = '';
+  document.getElementById('noteInputArea').style.display = 'none';
+  document.getElementById('noteModal').style.display = 'flex';
+}
+
+function showNoteInput() {
+  document.getElementById('noteInputArea').style.display = 'block';
+  document.getElementById('noteText').focus();
+}
+
+// ===== 送出 =====
+async function submitRecord() {
+  const weekNum = document.getElementById('weekNum').value.trim();
+  const date = document.getElementById('dateField').value;
+  if (!weekNum) { showToast('請輸入週次', true); return; }
+  if (!state.school) { showToast('請選擇學校', true); return; }
+  if (!state.student) { showToast('請選擇學生', true); return; }
+  if (!state.subject) { showToast('請選擇科目', true); return; }
+
+  const btn = document.getElementById('submitBtn');
+  btn.disabled = true;
+  btn.textContent = '送出中...';
+
+  // 整理數學細項
+  let mathSubStr = '';
+  if (state.subject === '數學') {
+    const entries = Object.entries(state.mathSubRatings);
+    if (entries.length > 0) {
+      mathSubStr = entries.map(([k,v]) => `${k}:${v}`).join('、');
+    }
+  }
+
+  // 整理國語練習項目
+  let chItems = [];
+  if (document.getElementById('chk-writing')?.checked) chItems.push('生字書寫');
+  if (document.getElementById('chk-vocab')?.checked) chItems.push('語詞解釋');
+  if (document.getElementById('chk-match')?.checked) chItems.push('語詞配對');
+  if (document.getElementById('chk-sentence')?.checked) chItems.push('造句');
+  if (document.getElementById('chk-reading')?.checked) chItems.push('課文理解測驗');
+  if (document.getElementById('chk-charPractice')?.checked) chItems.push('一年級生字練習');
+
+  const data = {
+    週次: weekNum,
+    日期: date,
+    學校: state.school,
+    年級: state.grade,
+    學生: state.student?.name || '',
+    科目: state.subject,
+    國語課次: state.subject === '國語' ? document.getElementById('lessonSelect').value : '',
+    國語練習項目: state.subject === '國語' ? chItems.join('、') : '',
+    造句: document.getElementById('chk-sentence')?.checked ? (state.sentenceResult || '完成') : '',
+    生字書寫答對: document.getElementById('writing-correct')?.value || '',
+    生字書寫總題: document.getElementById('writing-total')?.value || '',
+    語詞解釋答對: document.getElementById('vocab-correct')?.value || '',
+    語詞解釋總題: document.getElementById('vocab-total')?.value || '',
+    語詞配對答對: document.getElementById('match-correct')?.value || '',
+    語詞配對總題: document.getElementById('match-total')?.value || '',
+    課文理解答對: document.getElementById('reading-correct')?.value || '',
+    課文理解總題: document.getElementById('reading-total')?.value || '',
+    生字練習答對: document.getElementById('charPractice-correct')?.value || '',
+    生字練習總題: document.getElementById('charPractice-total')?.value || '',
+    數學單元: state.subject === '數學' ? (state.student?.special === '一年級' ? (document.getElementById('grade1MathUnitSelect')?.value || '') : state.mathUnit) : '',
+    數學細項熟練: state.student?.special === '一年級' ? (basicMathItems.join('、') + (grade1MathRatings.mathBasic ? '：'+grade1MathRatings.mathBasic : '')) : mathSubStr,
+    數學一年級評分: state.student?.special === '一年級' ? JSON.stringify(grade1MathRatings) : '',
+    國語一年級評分: state.student?.special === '一年級' ? JSON.stringify(grade1ChRatings) : '',
+    常用字認字單元: document.getElementById('charPractice-unit')?.value || '',
+    備註: document.getElementById('noteText')?.value || '',
+  };
+
+  try {
+    await fetch(SCRIPT_URL, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data),
+    });
+    showToast('✓ 紀錄已送出！');
+    setTimeout(() => resetForm(), 1500);
+  } catch (e) {
+    showToast('送出失敗，請重試', true);
+  }
+
+  btn.disabled = false;
+  btn.textContent = '✓ 送出紀錄';
+}
+
+// ===== 重設 =====
+function resetForm() {
+  document.getElementById('noteModal').style.display = 'none';
+  document.getElementById('weekNum').value = '';
+  document.getElementById('studentSelect').value = '';
+  document.getElementById('noteText').value = '';
+  state = { school:"", student:null, grade:"", subject:"", lessonKey:"", mathUnit:"", mathSubRatings:{}, sentenceResult:"" };
+  document.querySelectorAll('.btn-option').forEach(b => b.classList.remove('selected','selected-green','selected-accent'));
+  document.getElementById('chk-sentence').checked = false;
+  hide('detail-sentence');
+  hide('studentField'); hide('gradeDisplay'); hide('subjectCard');
+  hide('chineseCard'); hide('mathCard'); hide('noteCard'); hide('submitBtn');
+  initDate();
+}
+
+// ===== 工具 =====
+function show(id) { document.getElementById(id)?.classList.remove('hidden'); }
+function hide(id) { document.getElementById(id)?.classList.add('hidden'); }
+function setVisible(id, visible) { visible ? show(id) : hide(id); }
+
+function showToast(msg, isError=false) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = 'toast' + (isError ? ' error' : '');
+  setTimeout(() => t.classList.add('show'), 10);
+  setTimeout(() => t.classList.remove('show'), 2500);
+}
+
+// ===== 頁面切換 =====
+function switchTab(tab) {
+  document.getElementById('page-record').style.display = tab === 'record' ? 'block' : 'none';
+  document.getElementById('page-query').style.display = tab === 'query' ? 'block' : 'none';
+  document.getElementById('tab-record').classList.toggle('selected', tab === 'record');
+  document.getElementById('tab-query').classList.toggle('selected', tab === 'query');
+}
+
+// ===== 查詢 =====
+async function queryRecords() {
+  const student = document.getElementById('queryStudent').value;
+  const weekFrom = document.getElementById('weekFrom').value;
+  const weekTo = document.getElementById('weekTo').value;
+
+  if (!student) { showToast('請選擇學生', true); return; }
+  if (!weekFrom || !weekTo) { showToast('請輸入週次範圍', true); return; }
+
+  const btn = document.getElementById('queryBtn');
+  btn.textContent = '查詢中...';
+  btn.disabled = true;
+
+  document.getElementById('queryResult').style.display = 'none';
+  document.getElementById('queryEmpty').style.display = 'none';
+
+  try {
+    const url = `${SCRIPT_URL}?student=${encodeURIComponent(student)}&weekFrom=${weekFrom}&weekTo=${weekTo}`;
+    const res = await fetch(url);
+    const json = await res.json();
+
+    if (!json.data || json.data.length === 0) {
+      document.getElementById('queryEmpty').style.display = 'block';
+    } else {
+      renderResult(student, weekFrom, weekTo, json.data);
+    }
+  } catch(e) {
+    showToast('查詢失敗，請重試', true);
+  }
+
+  btn.textContent = '🔍 查詢';
+  btn.disabled = false;
+}
+
+// ===== 整理顯示 =====
+function renderResult(student, weekFrom, weekTo, rows) {
+  // 依週次和科目分組
+  const grouped = {};
+  rows.forEach(r => {
+    const week = r['週次'] || '';
+    const subj = r['科目'] || '';
+    const key = week + '|' + subj;
+    if (!grouped[key]) grouped[key] = [];
+    grouped[key].push(r);
+  });
+
+  let text = `${student}　第${weekFrom}～${weekTo}週學習摘要
+`;
+  text += '─'.repeat(24) + '
+
+';
+
+  // 依週次排序
+  const keys = Object.keys(grouped).sort((a, b) => {
+    const wa = parseInt(a.split('|')[0].replace(/[^0-9]/g,''));
+    const wb = parseInt(b.split('|')[0].replace(/[^0-9]/g,''));
+    return wa - wb;
+  });
+
+  let lastWeek = '';
+  keys.forEach(key => {
+    const [week, subj] = key.split('|');
+    const records = grouped[key];
+
+    if (week !== lastWeek) {
+      text += `📅 ${week}
+`;
+      lastWeek = week;
+    }
+
+    records.forEach(r => {
+      if (subj === '國語') {
+        text += `
+【國語】${r['國語課次'] || ''}
+`;
+        const items = (r['國語練習項目'] || '').split('、').filter(Boolean);
+        items.forEach(item => {
+          if (item === '生字書寫') {
+            const c = r['生字書寫答對'], t = r['生字書寫總題'];
+            text += `  • 生字書寫：${c || '-'}/${t || '-'}
+`;
+          } else if (item === '語詞解釋') {
+            const c = r['語詞解釋答對'], t = r['語詞解釋總題'];
+            text += `  • 語詞解釋：${c || '-'}/${t || '-'}
+`;
+          } else if (item === '語詞配對') {
+            const c = r['語詞配對答對'], t = r['語詞配對總題'];
+            text += `  • 語詞配對：${c || '-'}/${t || '-'}
+`;
+          } else if (item === '課文理解測驗') {
+            const c = r['課文理解答對'], t = r['課文理解總題'];
+            text += `  • 課文理解：${c || '-'}/${t || '-'}
+`;
+          } else if (item === '常用字認字') {
+            const c = r['生字練習答對'], t = r['生字練習總題'];
+            text += `  • 常用字認字：${c || '-'}/${t || '-'}
+`;
+          } else if (item === '造句') {
+            text += `  • 造句：${r['造句'] || ''}
+`;
+          }
+        });
+        if (r['備註']) text += `  📝 ${r['備註']}
+`;
+
+      } else if (subj === '數學') {
+        text += `
+【數學】${r['數學單元'] || ''}
+`;
+        const 細項 = r['數學細項熟練'] || '';
+        if (細項) {
+          細項.split('、').forEach(item => {
+            text += `  • ${item}
+`;
+          });
+        }
+        if (r['備註']) text += `  📝 ${r['備註']}
+`;
+      }
+    });
+    text += '
+';
+  });
+
+  document.getElementById('queryResultTitle').textContent = `${student} 第${weekFrom}～${weekTo}週`;
+  document.getElementById('queryResultContent').textContent = text.trim();
+  document.getElementById('queryResult').style.display = 'block';
+}
+
+// ===== 複製 =====
+function copyResult() {
+  const text = document.getElementById('queryResultContent').textContent;
+  navigator.clipboard.writeText(text).then(() => {
+    showToast('✓ 已複製！');
+  }).catch(() => {
+    // fallback
+    const el = document.createElement('textarea');
+    el.value = text;
+    document.body.appendChild(el);
+    el.select();
+    document.execCommand('copy');
+    document.body.removeChild(el);
+    showToast('✓ 已複製！');
+  });
+}
+</script>
+</body>
+</html>
